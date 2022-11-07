@@ -1,0 +1,23 @@
+# docker-compose.yaml
+version: '3'
+services:
+ jenkins:
+  image: jenkinsci/blueocean:latest
+  privileged: true
+  container_name: jenkins
+  ports:
+   - 8080:8080
+  volumes:
+   - /home/jenkins:/var/jenkins_home
+   - /var/run/docker.sock:/var/run/docker.sock
+  restart: on-failure
+
+agent:
+ image: jenkins/ssh-agent:jdk11
+ privileged: true
+ user: root
+ container_name: agent
+ expose:
+  - 22
+ environment:
+  - JENKINS_AGENT_SSH_PUBKEY=ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDmtxSSX13K0mWnigcZYkkpJv3EYN9YFFZG1svQjfCICsB5yJjtt92EC>0oIhqeds539LgZN5G3nVRRcdZjxHGN3vP4VXm8GjgTkfWUMMkFtGvtyo/AgFwJoH6oMckxUN80yr13Bdtp3PMF1cy54y3S8Oz56/86rbjLUZY+oUhCQwZ0RR/j39FOhykyrrh03mlEp+TYEy92us/QceTLo7a4d/RGT1cYut84Y2+yLI2xzuoG1+CkYUEYMTdSIERmzcJOVxokcOKlWaM5oaGiD2uxHJncax/EOAiT7Jr6s= root@ubuntu-focal
